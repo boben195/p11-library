@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 
 const SignupPage = () => {
   return (
@@ -38,6 +39,13 @@ const SignupPage = () => {
         <button className="w-full bg-[#403D39] text-[#FFFCF2] py-2 font-medium rounded-lg">
           Sign Up
         </button>
+
+        <p>
+          Already have an account?{" "}
+          <Link to={"/login"} className="text-[#944424]">
+            Log In
+          </Link>
+        </p>
       </form>
     </div>
   );
