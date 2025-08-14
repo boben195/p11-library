@@ -48,6 +48,7 @@ console.log("🔍 Looking for .env at:", envPath);
 
 // Load .env file
 dotenv.config({ path: envPath });
+console.log("DEBUG process.env.MONGO_URI:", process.env.MONGO_URI);
 
 // Validate environment variables
 if (!process.env.MONGO_URI) {
