@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useAuthStore } from "../store/authStore";
 import toast from "react-hot-toast";
 
@@ -12,7 +12,9 @@ const SignupPage = () => {
 
   const { signup, isLoading, error } = useAuthStore();
 
-  const handleSignup = (e) => {
+  const navigate = useNavigate();
+
+  const handleSignup = async (e) => {
     e.preventDefault();
 
     try {
@@ -20,7 +22,11 @@ const SignupPage = () => {
         toast.error("Password must match");
         return;
       }
-    } catch (error) {}
+      await signup(username, email, password);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -68,11 +74,15 @@ const SignupPage = () => {
             className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg bg-white border border-gray-500"
           />
         </div>
+
+        {error && <p className="text-red-500">{error}</p>}
+
         <button
           type="submit"
+          disabled={isLoading}
           className="w-full bg-[#403D39] text-[#FFFCF2] py-2 font-medium rounded-lg"
         >
-          Sign Up
+          {isLoading ? "Please wait..." : "Sign up"}
         </button>
 
         <p>
