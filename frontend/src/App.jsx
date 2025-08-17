@@ -4,10 +4,12 @@ import HomePage from "./pages/HomePage";
 import Addbook from "./pages/Addbook";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <>
+      <Toaster />
       <Navbar />
       <Routes>
         <Route path={"/"} element={<HomePage />} />
