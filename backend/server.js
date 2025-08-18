@@ -92,9 +92,9 @@ app.post("/api/login", async (req, res) => {
       })
     }
 
-    return res.status(200).json({user: userDoc, message: "User created successfully"})
+    return res.status(200).json({user: userDoc, message: "Log in successfully successfully"})
   } catch (error) {
-    
+    res.status(400).json({message: error.message})
   }
 })
 
