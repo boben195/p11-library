@@ -80,7 +80,10 @@ app.post("/api/login", async (req, res) => {
 
 //jwt
     if (userDoc) {
-      const token = jwt.sign({ id: userDoc._id }, process.env.JWT_SECRET, { expiresIn: "7d" })
+      const token = jwt.sign({ id: userDoc._id }, process.env.JWT_SECRET,
+        { expiresIn: "7d" })
+
+
       res.cookie("token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
