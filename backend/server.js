@@ -60,6 +60,42 @@ app.post("/api/signup", async (req, res) => {
 })
 
 
+app.post("/api/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const userDoc = await User.findOne({ email });
+    if (!userDoc) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    const isPasswordValid = await bcryptjs.compareSync(
+      password,
+      userDoc.password
+    );
+
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+//jwt
+    if (userDoc) {
+      const token = jwt.sign({ id: userDoc._id }, process.env.JWT_SECRET, { expiresIn: "7d" })
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      })
+    }
+
+    return res.status(200).json({user: userDoc, message: "User created successfully"})
+  } catch (error) {
+    
+  }
+})
+
+
 app.listen(PORT, async () => {
   await connectionDB()
     console.log("SERVER STARTED AT PORT ", PORT);
