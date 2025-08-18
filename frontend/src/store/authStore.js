@@ -3,6 +3,8 @@ import axios from "axios";
 
 const API_URI = "http://localhost:5000/api"
 
+axios.defaults.withCredentials = true; //save token to cookies !DONT FORGET IT IN server.js
+
 
 export const useAuthStore = create((set) => ({
     user: null,

@@ -4,6 +4,7 @@ import { connectionDB } from "./config/db.js";
 import User from "./models/user.model.js";
 import bcryptjs from "bcryptjs"
 import jwt from "jsonwebtoken"
+import cors from "cors"
 
 dotenv.config();
 
@@ -14,7 +15,7 @@ const PORT = process.env.PORT || 5000
 
 console.log("PORT is ", process.env.PORT);
 
-
+app.use(cors({origin: "http://localhost:5173", credentials: true})) // credentials: true save token to cookies !DONT FORGET IT IN authStore.js
 app.use(express.json());
 
 app.post("/api/signup", async (req, res) => {
