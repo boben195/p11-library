@@ -78,7 +78,7 @@ app.post("/api/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-//jwt
+    //jwt
     if (userDoc) {
       const token = jwt.sign({ id: userDoc._id }, process.env.JWT_SECRET,
         { expiresIn: "7d" })
@@ -92,10 +92,34 @@ app.post("/api/login", async (req, res) => {
       })
     }
 
-    return res.status(200).json({user: userDoc, message: "Log in successfully successfully"})
+    return res.status(200).json({ user: userDoc, message: "Log in successfully successfully" })
   } catch (error) {
-    res.status(400).json({message: error.message})
+    res.status(400).json({ message: error.message })
   }
+});
+
+app.get("/api/fatch-user", async (req, res) => {
+  const { token } = req.cookies;
+
+  if (!token) {
+    return res.status(401).json({ message: "No token" });
+}
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      if (!decoded) {
+        return res.status(401).json({ message: "Invalid token" });
+      }
+
+      const userDoc = await User.findById(decoded.id).select("-password");
+      if (!userDoc) {
+        return res.status(400).json({ message: "User not found" });
+      }
+
+      res.status(200).json({user: userDoc})
+    } catch (error) {
+      res.status(400).json({ message: error.message })
+    }
+  
 })
 
 
