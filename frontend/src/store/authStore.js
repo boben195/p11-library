@@ -52,6 +52,20 @@ export const useAuthStore = create((set) => ({
             set({ isLoading: false, error: error.responce.data.message || "Error during login!!!", });
             throw error;
         }
+    },
+
+
+    fetchUser: async () => {
+        set({ fetchingUser: true, error: null });
+
+        try {
+            const responce = await axios.get(`${API_URI}/fetch-user`);
+
+            set({user: responce.data.user, fetchingUser: false})
+        } catch (error) {
+            set({ fetchingUser: false, error: null, user: null, });
+            throw error;
+        }
     }
 
 }))
