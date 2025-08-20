@@ -2,9 +2,10 @@ import express from "express";
 import dotenv from "dotenv";
 import { connectionDB } from "./config/db.js";
 import User from "./models/user.model.js";
-import bcryptjs from "bcryptjs"
-import jwt from "jsonwebtoken"
-import cors from "cors"
+import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ console.log("PORT is ", process.env.PORT);
 
 app.use(cors({origin: "http://localhost:5173", credentials: true})) // credentials: true save token to cookies !DONT FORGET IT IN authStore.js
 app.use(express.json());
+app.use(cookieParser());
 
 app.post("/api/signup", async (req, res) => {
   const { username, email, password } = req.body;
