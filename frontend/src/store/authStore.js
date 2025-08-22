@@ -17,18 +17,18 @@ export const useAuthStore = create((set) => ({
     signup: async (username, email, password) => {
         set({ isLoading: true, message: null });
         try {
-            const responce = await axios.post(`${API_URI}/signup`, {
+            const response = await axios.post(`${API_URI}/signup`, {
                 username,
                 email,
                 password,
             })
 
             set({
-                user: responce.data.user,
+                user: response.data.user,
                 isLoading: false,
             })
         } catch (error) {
-            set({ isLoading: false, error: error.responce.data.message || "Error during signup!!!", });
+            set({ isLoading: false, error: error.response?.data?.message || "Error during signup!!!", });
             throw error;
         };
     },
@@ -38,18 +38,18 @@ export const useAuthStore = create((set) => ({
         set({ isLoading: true, message: null, error: null });
 
         try {
-            const responce = await axios.post(`${API_URI}/login`, {
+            const response = await axios.post(`${API_URI}/login`, {
                 email,
                 password,
             });
 
 
-            const { user, message } = responce.data;
+            const { user, message } = response.data;
             set({ user, isLoading: false, message });
 
             return {user, message}
         } catch (error) {
-            set({ isLoading: false, error: error.responce.data.message || "Error during login!!!", });
+            set({ isLoading: false, error: error.response?.data?.message || "Error during login!!!", });
             throw error;
         }
     },
@@ -59,9 +59,9 @@ export const useAuthStore = create((set) => ({
         set({ fetchingUser: true, error: null });
 
         try {
-            const responce = await axios.get(`${API_URI}/fetch-user`);
+            const response = await axios.get(`${API_URI}/fetch-user`);
 
-            set({user: responce.data.user, fetchingUser: false})
+            set({user: response.data.user, fetchingUser: false})
         } catch (error) {
             set({ fetchingUser: false, error: null, user: null, });
             throw error;
